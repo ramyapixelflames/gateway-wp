@@ -94,11 +94,13 @@ add_action( 'wp_enqueue_scripts', 'theme_scripts' );
 
 // custom functions
     require get_template_directory() . '/includes/custom.php';
+    require get_template_directory() . '/includes/project-filter.php';
 // custom functions end
 
 // CPT
     require get_template_directory() . '/includes/cpt/news.php';
     require get_template_directory() . '/includes/cpt/team.php';
+    require get_template_directory() . '/includes/cpt/projects.php';
 // CPT end
 
 // Disable XML-RPC
@@ -135,6 +137,12 @@ function allow_webp_uploads($mimes) {
 }
 add_filter('upload_mimes', 'allow_webp_uploads');
 
+function enqueue_filter_scripts() {
+  wp_enqueue_script('filter-projects', get_template_directory_uri() . '/js/filter-projects.js', array('jquery'), null, true);
+
+  wp_localize_script('filter-projects', 'ajax_params', array('ajax_url' => admin_url('admin-ajax.php')));
+}
+add_action('wp_enqueue_scripts', 'enqueue_filter_scripts');
 
 
 ?>
